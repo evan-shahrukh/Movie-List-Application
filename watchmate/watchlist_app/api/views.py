@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
-# from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
@@ -142,7 +142,7 @@ class StreamingPlatformVS(viewsets.ModelViewSet):
     serializer_class = StreamingPlatformSerializer
 
 class WatchListAV(APIView):
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
     def get(self,request):
         movie = WatchList.objects.all()
         serializer = WatchListSerializer(movie,many=True,context={"request" : request})
@@ -156,7 +156,7 @@ class WatchListAV(APIView):
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class WatchDetailAV(APIView):
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
     def get(self,request,pk):
         try:
             movie = WatchList.objects.get(pk=pk)
