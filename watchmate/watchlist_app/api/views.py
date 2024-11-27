@@ -219,7 +219,7 @@ class ReviewCreate(generics.CreateAPIView):
     
     def perform_create(self,serializer):
         watchlist = WatchList.objects.get(pk=self.kwargs.get("pk"))
-        review_user = Review.objects.filter(review_user=self.request.user)
+        review_user = Review.objects.filter(review_user=self.request.user,watchlist=watchlist)
         
         if review_user.exists():
             raise ValidationError('User has already reviewed this movie.')
